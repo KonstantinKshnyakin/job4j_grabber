@@ -1,0 +1,2 @@
+[![Build Status](https://travis-ci.com/KonstantinKshnyakin/job4j.svg?branch=master)](https://travis-ci.com/KonstantinKshnyakin/job4j_grabber)
+[![codecov](https://codecov.io/gh/KonstantinKshnyakin/job4j/branch/master/graph/badge.svg)](https://codecov.io/gh/KonstantinKshnyakin/job4j_grabber)
