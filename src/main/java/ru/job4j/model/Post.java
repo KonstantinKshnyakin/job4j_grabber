@@ -6,16 +6,18 @@ import java.util.Objects;
 public class Post {
 
     private String headLine;
-    private LocalDateTime dateTime;
+    private LocalDateTime createDate;
     private String link;
+    private String text;
 
     public Post() {
     }
 
-    public Post(String headLine, LocalDateTime dateTime, String link) {
+    public Post(String headLine, LocalDateTime dateTime, String link, String text) {
         this.headLine = headLine;
-        this.dateTime = dateTime;
+        this.createDate = dateTime;
         this.link = link;
+        this.text = text;
     }
 
     public String getHeadLine() {
@@ -26,12 +28,12 @@ public class Post {
         this.headLine = headLine;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     public String getLink() {
@@ -40,6 +42,14 @@ public class Post {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
@@ -56,7 +66,10 @@ public class Post {
         if (!Objects.equals(headLine, post.headLine)) {
             return false;
         }
-        if (!Objects.equals(dateTime, post.dateTime)) {
+        if (!Objects.equals(createDate, post.createDate)) {
+            return false;
+        }
+        if (!Objects.equals(text, post.text)) {
             return false;
         }
         return Objects.equals(link, post.link);
@@ -66,8 +79,9 @@ public class Post {
     public int hashCode() {
         int result = 17;
         result = result * 31 + (headLine != null ? headLine.hashCode() : 0);
-        result = 31 * result + (dateTime != null ? dateTime.hashCode() : 0);
+        result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
+        result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
 
@@ -75,8 +89,9 @@ public class Post {
     public String toString() {
         return "Post{"
                 + "headLine='" + headLine + '\''
-                + ", dateTime=" + dateTime
+                + ", dateTime=" + createDate
                 + ", link='" + link + '\''
+                + ", text='" + text + '\''
                 + '}';
     }
 }

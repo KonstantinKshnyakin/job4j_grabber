@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.job4j.model.Post;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -15,37 +16,49 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class SqlRuParse {
-    public static void main(String[] args) throws Exception {
-        Document doc = connectAndReadPage(5);
-        parseHeadLineAndHrefAndDate(doc);
+
+    public static final String URL = "https://www.sql.ru/forum/job-offers/";
+
+    public static void main(String[] args) {
+        Document doc = connectAndReadPages(URL, 5);
+        parsePost(doc);
     }
 
-    private static void parseHeadLineAndHrefAndDate(Document doc) {
+    private static void parsePost(Document doc) {
         Elements select = doc.select("tr");
         for (Element ele : select) {
             Elements posts = ele.select(".postslisttopic");
             Elements alts = ele.select(".altCol");
             if (posts.size() != 0) {
-                String headline = posts.get(0).child(0).text();
-                String href = posts.get(0).child(0).attr("href");
-                String date = parseLocalDateTime(alts.get(1).text()).toString();
-                System.out.printf("%s%n%s%n%s%n%n", headline, href, date);
+                String headline = posts.first().child(0).text();
+                String link = posts.first().child(0).attr("href");
+                LocalDateTime date = parseLocalDateTime(alts.last().text());
+                Document descPage = connectAndReadPage(link);
+                String descText = descPage.select(".msgBody").last().text();
+                Post post = new Post(headline, date, link, descText);
+                System.out.println(post);
             }
         }
     }
 
-    private static Document connectAndReadPage(int countPage) {
+    private static Document connectAndReadPages(String url, int countPage) {
         StringBuilder builder = new StringBuilder();
+        for (int i = 1; i <= countPage; i++) {
+            Document doc = connectAndReadPage(url + i);
+            String html = doc.html();
+            builder.append(html).append(System.lineSeparator());
+        }
+        return Jsoup.parse(builder.toString());
+    }
+
+    private static Document connectAndReadPage(String url) {
+        Document doc = null;
         try {
-            for (int i = 1; i <= countPage; i++) {
-                Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + i).get();
-                final String s = doc.html();
-                builder.append(s).append(System.lineSeparator());
-            }
+                doc = Jsoup.connect(url).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Jsoup.parse(builder.toString());
+        return Objects.requireNonNull(doc);
     }
 
     private static LocalDateTime parseLocalDateTime(String date) {
@@ -55,12 +68,12 @@ public class SqlRuParse {
             ldt = parseLocalDateTime(split);
         } else if (split.length == 3) {
             String spt0 = split[0];
-            int spt1 = Integer.parseInt(split[1]);
-            int spt2 = Integer.parseInt(split[2]);
+            int hour = Integer.parseInt(split[1]);
+            int min = Integer.parseInt(split[2]);
             if (spt0.equals("сегодня")) {
-                ldt = LocalDateTime.of(LocalDate.now(), LocalTime.of(spt1, spt2));
+                ldt = LocalDateTime.of(LocalDate.now(), LocalTime.of(hour, min));
             } else if (spt0.equals("вчера")) {
-                ldt = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(spt1, spt2));
+                ldt = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(hour, min));
             }
         }
         return Objects.requireNonNull(ldt);
