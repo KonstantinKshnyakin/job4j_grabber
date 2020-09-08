@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -15,7 +16,11 @@ import java.util.Objects;
 
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
-        Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
+        Document doc = connectAndReadPage(5);
+        parseHeadLineAndHrefAndDate(doc);
+    }
+
+    private static void parseHeadLineAndHrefAndDate(Document doc) {
         Elements select = doc.select("tr");
         for (Element ele : select) {
             Elements posts = ele.select(".postslisttopic");
@@ -25,9 +30,22 @@ public class SqlRuParse {
                 String href = posts.get(0).child(0).attr("href");
                 String date = parseLocalDateTime(alts.get(1).text()).toString();
                 System.out.printf("%s%n%s%n%s%n%n", headline, href, date);
-
             }
         }
+    }
+
+    private static Document connectAndReadPage(int countPage) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            for (int i = 1; i <= countPage; i++) {
+                Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + i).get();
+                final String s = doc.html();
+                builder.append(s).append(System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Jsoup.parse(builder.toString());
     }
 
     private static LocalDateTime parseLocalDateTime(String date) {
