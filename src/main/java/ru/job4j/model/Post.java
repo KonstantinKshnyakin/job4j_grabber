@@ -88,10 +88,15 @@ public class Post {
     @Override
     public String toString() {
         return "Post{"
+                + System.lineSeparator()
                 + "headLine='" + headLine + '\''
-                + ", dateTime=" + createDate
-                + ", link='" + link + '\''
-                + ", text='" + text + '\''
-                + '}';
+                + System.lineSeparator()
+                + "dateTime=" + createDate
+                + System.lineSeparator()
+                + "link='" + link + '\''
+                + System.lineSeparator()
+                + "text='" + text + '\''
+                + '}'
+                + System.lineSeparator();
     }
 }
