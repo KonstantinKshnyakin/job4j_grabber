@@ -13,8 +13,8 @@ public class Post {
     public Post() {
     }
 
-    public Post(String headLine, LocalDateTime dateTime, String link, String text) {
-        this.title = headLine;
+    public Post(String title, LocalDateTime dateTime, String link, String text) {
+        this.title = title;
         this.createDate = dateTime;
         this.link = link;
         this.text = text;

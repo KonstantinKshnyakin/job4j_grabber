@@ -25,7 +25,7 @@ public class SqlRuParse implements Parse {
     public static void main(String[] args) {
         SqlRuParse parse = new SqlRuParse();
         List<Post> list = parse.list(URL);
-        System.out.println(list);
+//        System.out.println(list);
     }
 
     public Post detail(Element ele) {
