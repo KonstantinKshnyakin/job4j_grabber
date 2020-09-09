@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Post {
 
-    private String headLine;
+    private String title;
     private LocalDateTime createDate;
     private String link;
     private String text;
@@ -14,18 +14,18 @@ public class Post {
     }
 
     public Post(String headLine, LocalDateTime dateTime, String link, String text) {
-        this.headLine = headLine;
+        this.title = headLine;
         this.createDate = dateTime;
         this.link = link;
         this.text = text;
     }
 
-    public String getHeadLine() {
-        return headLine;
+    public String getTitle() {
+        return title;
     }
 
-    public void setHeadLine(String headLine) {
-        this.headLine = headLine;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public LocalDateTime getCreateDate() {
@@ -63,7 +63,7 @@ public class Post {
 
         Post post = (Post) o;
 
-        if (!Objects.equals(headLine, post.headLine)) {
+        if (!Objects.equals(title, post.title)) {
             return false;
         }
         if (!Objects.equals(createDate, post.createDate)) {
@@ -78,7 +78,7 @@ public class Post {
     @Override
     public int hashCode() {
         int result = 17;
-        result = result * 31 + (headLine != null ? headLine.hashCode() : 0);
+        result = result * 31 + (title != null ? title.hashCode() : 0);
         result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
         result = 31 * result + (text != null ? text.hashCode() : 0);
@@ -89,7 +89,7 @@ public class Post {
     public String toString() {
         return "Post{"
                 + System.lineSeparator()
-                + "headLine='" + headLine + '\''
+                + "headLine='" + title + '\''
                 + System.lineSeparator()
                 + "dateTime=" + createDate
                 + System.lineSeparator()

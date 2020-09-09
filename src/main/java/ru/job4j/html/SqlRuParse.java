@@ -33,11 +33,11 @@ public class SqlRuParse implements Parse {
         Elements posts = ele.select(".postslisttopic");
         Elements alts = ele.select(".altCol");
         if (posts.size() != 0) {
-            String headline = posts.first().child(0).text();
+            String title = posts.first().child(0).text();
             String link = posts.first().child(0).attr("href");
             LocalDateTime date = parseLocalDateTime(alts.last().text());
             String descText = parseDescriptionText(link);
-            post = new Post(headline, date, link, descText);
+            post = new Post(title, date, link, descText);
         }
         return post;
     }
