@@ -21,8 +21,8 @@ public class PsqlStore implements Store, AutoCloseable {
         List<Post> list = parse.list(SqlRuParse.URL);
         list.forEach(store::save);
         String sep = System.lineSeparator();
-        System.out.println("Post with id 1 : " + sep + store.findById("1"));
-        System.out.println("Post with id 5 : " + sep + store.findById("5"));
+//        System.out.println("Post with id 1 : " + sep + store.findById("1"));
+//        System.out.println("Post with id 5 : " + sep + store.findById("5"));
         System.out.println("All Posts : " + sep + store.getAll());
         System.out.println();
     }

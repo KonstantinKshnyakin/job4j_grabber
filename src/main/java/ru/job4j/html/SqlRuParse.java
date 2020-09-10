@@ -18,9 +18,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+
 public class SqlRuParse implements Parse {
 
     public static final String URL = "https://www.sql.ru/forum/job-offers/";
+    public static final String JAVA = "Java";
+    public static final String JAVA_SCRIPT = "JavaScript";
 
     public static void main(String[] args) {
         SqlRuParse parse = new SqlRuParse();
@@ -35,9 +39,12 @@ public class SqlRuParse implements Parse {
         if (posts.size() != 0) {
             String title = posts.first().child(0).text();
             String link = posts.first().child(0).attr("href");
-            LocalDateTime date = parseLocalDateTime(alts.last().text());
             String descText = parseDescriptionText(link);
-            post = new Post(title, date, link, descText);
+            if ((containsIgnoreCase(title, JAVA) || containsIgnoreCase(descText, JAVA))
+            && !(containsIgnoreCase(title, JAVA_SCRIPT) || containsIgnoreCase(descText, JAVA_SCRIPT))) {
+                LocalDateTime date = parseLocalDateTime(alts.last().text());
+                post = new Post(title, date, link, descText);
+            }
         }
         return post;
     }
